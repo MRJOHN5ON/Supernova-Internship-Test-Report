@@ -25,7 +25,7 @@
 
 ## Video Demonstration
 
-[![Video Demonstration](https://img.youtube.com/vi/KO-V_HEkh3o/0.jpg)](https://www.youtube.com/watch?v=KO-V_HEkh3o)
+[![Video Demonstration](slide1.png)](https://www.youtube.com/watch?v=KO-V_HEkh3o)
 
 ## Focus Areas
 1. **API Testing**
