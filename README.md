@@ -27,7 +27,7 @@
 
 [![Video Demonstration](slide1.png)](https://www.youtube.com/watch?v=KO-V_HEkh3o)
 [Video Link](https://www.youtube.com/watch?v=KO-V_HEkh3o)
-
+Disclaimer: Some scenes in this video have been blurred/redacted to maintain privacy.
 ## Focus Areas
 1. **API Testing**
    - Backend API testing for `cal_carrier_remmitance` and `ping` endpoints
@@ -93,12 +93,14 @@
 1. **Error Response Enhancement**
    - Current issue: Complex error messages with stack traces
    - Example of current response:
+   - Disclaimer: The following error response is a generic example and has been modified to protect the privacy of the company's data.
    ```json
    {
-      "error": "single positional indexer is out-of-bounds",
-      "stackTrace": "Traceback (most recent call last):\n  File \"/home/site/wwwroot/api/calc_carrier_remittance_rate.py\", line 48, in http_trigger\n    response = temp_df.iloc[0].to_dict()\n               ~~~~~~~~~~~~^^^\n  File \"/usr/local/lib/python3.11/site-packages/pandas/core/indexing.py\", line 1191, in __getitem__\n    return self._getitem_axis(maybe_callable, axis=axis)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/site-packages/pandas/core/indexing.py\", line 1752, in _getitem_axis\n    self._validate_integer(key, axis)\n  File \"/usr/local/lib/python3.11/site-packages/pandas/core/indexing.py\", line 1685, in _validate_integer\n    raise IndexError(\"single positional indexer is out-of-bounds\")\nIndexError: single positional indexer is out-of-bounds\n"
-   }
+                "error": "single positional indexer is out-of-bounds",
+                "stackTrace": "Traceback (most recent call last):\n  File \"/path/to/api/file.py\", line 48, in http_trigger\n    response = temp_df.iloc[0].to_dict()\n               ~~~~~~~~~~~~^^^\n  File \"/path/to/library/file.py\", line 1191, in __getitem__\n    return self._getitem_axis(maybe_callable, axis=axis)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/path/to/library/file.py\", line 1752, in _getitem_axis\n    self._validate_integer(key, axis)\n  File \"/path/to/library/file.py\", line 1685, in _validate_integer\n    raise IndexError(\"single positional indexer is out-of-bounds\")\nIndexError: single positional indexer is out-of-bounds\n"
+            }
    ```
+   
    - Recommendation: Implement user-friendly error messages
 
 2. **French Character Support**
@@ -112,26 +114,5 @@
 
    - My understanding of how this API is supposed to work is somewhat limited, but based on my assumption, for example, if I set a `transaction_date` of `2030-04-15`, the `start_date_inclu` in the results should not be before that. However, when I tested this, I set the `transaction_date` to `2030-04-15`, but the API response returned a `start_date_inclu` of `2024-01-01`. Because of this assumption, I wrote a new postman pre-request and post-request script.
 
-   Pre-Request Script:
-   ```javascript 
-   const requestBody = pm.request.body.raw;
-   const parsedBody = JSON.parse(requestBody);
-   pm.environment.set("transaction_date", parsedBody.transaction_date);
-   ```
-
-   Post-Request Script:
-   ```javascript
-   pm.test("Start_date_inclu is on or after the transaction_date", function () {
-    const responseData = pm.response.json();
-    // Retrieve transaction_date from environment variable
-    const transactionDate = pm.environment.get('transaction_date');
-    if (!transactionDate) {
-        pm.expect.fail("transaction_date is not defined in environment variables");
-    }
-    // Convert to Date objects for comparison
-    const startDateInclu = new Date(responseData.start_date_inclu);
-    const transactionDateObj = new Date(transactionDate);
-    // Ensure start_date_inclu is on or after transaction_date
-      pm.expect(startDateInclu).to.be.at.least(transactionDateObj, "start_date_inclu should be on or after transaction_date");
-   });
-   ```
+  **Final Conclusion**
+Testing the Supernova API and UI of the webapp was an excellent experience for the entire team. In this project, the API and UI testing efforts revealed significant areas of both success and improvements. While the platform demonstrated reliable handling of requests, a notable number of failed assertions and defects, particularly in error handling and validation were identified. The exploratory testing on both desktop and mobile platforms also uncovered several usability and functional issues, particularly concerning responsiveness and session management. Addressing these will be crucial for improving the overall user experience and reliability of the platform.
